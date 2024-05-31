@@ -4,10 +4,10 @@ import tkinter as tk
 
 # N-Queen problem using simulated annealing
 
-N = 8  # Number of queens
+N = 10  # Number of queens
 E_MAX = 0  # Max number of attacks
 INITIAL_TEMP = 1000  # Initial temperature
-MIN_TEMP = 0.0001
+MIN_TEMP = 0.00001
 ALPHA = 0.99
 
 # Function to initialize the state of the board
@@ -49,6 +49,8 @@ def acceptance_probability(utility, new_utility, temperature):
 def simulated_annealing():
     current_state = initialState()
     e = utility(current_state)
+    print("Initial state: ", current_state)
+    print("Cost: ", e)
     T = INITIAL_TEMP
     k = 0
     while e > E_MAX and T > MIN_TEMP:
