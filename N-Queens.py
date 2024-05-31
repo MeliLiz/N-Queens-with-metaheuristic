@@ -1,11 +1,14 @@
 import random
 import math
+import tkinter as tk
 
 # N-Queen problem using simulated annealing
 
 N = 8  # Number of queens
 E_MAX = 0  # Max number of attacks
 INITIAL_TEMP = 1000  # Initial temperature
+MIN_TEMP = 0.0001
+ALPHA = 0.99
 
 # Function to initialize the state of the board
 def initialState():
@@ -32,6 +35,7 @@ def utility(state):
                 collisions += 1
     return collisions
 
+# Function to determine T_(k+1) given alpha and T_k
 def temp(T, alpha):
     return T * alpha
 
@@ -47,7 +51,7 @@ def simulated_annealing():
     e = utility(current_state)
     T = INITIAL_TEMP
     k = 0
-    while e > E_MAX and T > 1e-5:
+    while e > E_MAX and T > MIN_TEMP:
         new_state = random.choice(neighbours(current_state))
         new_utility = utility(new_state)
         current_utility = utility(current_state)
@@ -55,11 +59,44 @@ def simulated_annealing():
         if ap > random.random():
             current_state = new_state
             e = new_utility
-        T = temp(T, 0.99)
+        T = temp(T, ALPHA)
         k += 1
     return current_state
+
+
+class Board:
+    
+    def __init__(self):
+        self.window = tk.Tk() 
+        self.window.title("N-Queens Problem")
+        self.window.geometry(f"{str(50*N)}x{str(50*N)}")
+        self.interface = tk.Canvas(self.window)
+        self.interface.pack(fill="both", expand=True)
+        self.queen = tk.PhotoImage(file="./Queen.png").subsample(7, 10)
+        
+    def __call__(self):
+        self.window.mainloop()
+        
+    def draw_board(self):
+        for i in range(N):
+            for j in range(N):
+                if (i + j) % 2 == 0:
+                    self.interface.create_rectangle(i * 50, j * 50, (i + 1) * 50, (j + 1) * 50, fill="white")
+                else:
+                    self.interface.create_rectangle(i * 50, j * 50, (i + 1) * 50, (j + 1) * 50, fill="black")
+                    
+    def show_queens(self, positions):
+        for i in range(N):
+            for j in range(N):
+                if positions[j] == i:
+                    self.interface.create_image(i * 50, j * 50, image=self.queen, anchor="nw")        
+
 
 if __name__ == "__main__":
     solution = simulated_annealing()
     print("Solution:", solution)
     print("Number of collisions:", utility(solution))
+    window = Board()
+    window.draw_board()
+    window.show_queens(solution)
+    window()
