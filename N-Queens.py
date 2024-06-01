@@ -2,13 +2,28 @@ import random
 import math
 import tkinter as tk
 
+# Colors
+GREEN = '\033[32m'
+YELLOW = '\033[33m'
+BLUE ='\033[34m'
+MAGENTA = '\033[35m'
+CYAN = '\033[36m'
+RESET = '\033[0m'
+
+
+
 # N-Queen problem using simulated annealing
 
-N = 10  # Number of queens
+N = 8  # Number of queens
 E_MAX = 0  # Max number of attacks
 INITIAL_TEMP = 1000  # Initial temperature
-MIN_TEMP = 0.00001
+MIN_TEMP = 0.00000001
 ALPHA = 0.99
+
+def select_N(num):
+    global N
+    N = num
+
 
 # Function to initialize the state of the board
 def initialState():
@@ -49,7 +64,7 @@ def acceptance_probability(utility, new_utility, temperature):
 def simulated_annealing():
     current_state = initialState()
     e = utility(current_state)
-    print("Initial state: ", current_state)
+    print(BLUE+"Initial state: ", current_state)
     print("Cost: ", e)
     T = INITIAL_TEMP
     k = 0
@@ -95,10 +110,22 @@ class Board:
 
 
 if __name__ == "__main__":
+    
+    print(CYAN,"\nSolution with 8 queens")
     solution = simulated_annealing()
-    print("Solution:", solution)
+    print(GREEN+"Solution:", solution)
     print("Number of collisions:", utility(solution))
     window = Board()
     window.draw_board()
     window.show_queens(solution)
     window()
+    
+    print(CYAN,"\nSolution with 10 queens")
+    select_N(10)
+    solution1 = simulated_annealing()
+    print(GREEN+"Solution:", solution1)
+    print("Number of collisions:", utility(solution1),RESET)
+    window1 = Board()
+    window1.draw_board()
+    window1.show_queens(solution1)
+    window1()
