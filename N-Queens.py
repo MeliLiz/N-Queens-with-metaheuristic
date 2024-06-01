@@ -65,6 +65,8 @@ def simulated_annealing():
     current_state = initialState()
     e = utility(current_state)
     print(BLUE+"Initial state: ", current_state)
+    print("Initial state:\n")
+    show_board(current_state)
     print("Cost: ", e)
     T = INITIAL_TEMP
     k = 0
@@ -80,6 +82,16 @@ def simulated_annealing():
         k += 1
     return current_state
 
+def show_board(state):
+    for i in range(N):
+        for j in range(N):
+            if state[j] == i:
+                print('Q', end=' ')
+            else:
+                print('.', end=' ')
+        print()
+    print()
+    
 
 class Board:
     
@@ -114,6 +126,7 @@ if __name__ == "__main__":
     print(CYAN,"\nSolution with 8 queens")
     solution = simulated_annealing()
     print(GREEN+"Solution:", solution)
+    show_board(solution)
     print("Number of collisions:", utility(solution))
     window = Board()
     window.draw_board()
@@ -124,6 +137,7 @@ if __name__ == "__main__":
     select_N(10)
     solution1 = simulated_annealing()
     print(GREEN+"Solution:", solution1)
+    show_board(solution1)
     print("Number of collisions:", utility(solution1),RESET)
     window1 = Board()
     window1.draw_board()
