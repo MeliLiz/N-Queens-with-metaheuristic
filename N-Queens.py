@@ -123,6 +123,10 @@ class Board:
 
 if __name__ == "__main__":
     
+    # To change the number N of queens, use the function select_N(number)
+    # before using simulated_annealing()
+    # The default vaue of N is 8
+    
     print(CYAN,"\nSolution with 8 queens")
     solution = simulated_annealing()
     print(GREEN+"Solution:", solution)
@@ -134,7 +138,7 @@ if __name__ == "__main__":
     window()
     
     print(CYAN,"\nSolution with 10 queens")
-    select_N(10)
+    select_N(10) # Change the number of queens to 10
     solution1 = simulated_annealing()
     print(GREEN+"Solution:", solution1)
     show_board(solution1)
